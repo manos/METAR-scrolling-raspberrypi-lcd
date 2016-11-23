@@ -19,18 +19,6 @@ def setup():
     LCD.write(1, 1, 'METAR Loop!')
     time.sleep(2)
 
-def example_loop():
-    space = '                '
-    greetings = 'Thank you for buying SunFounder Sensor Kit for Raspberry! ^_^'
-    greetings = space + greetings
-    while True:
-        tmp = greetings
-        for i in range(0, len(greetings)):
-            LCD.write(0, 0, tmp)
-            tmp = tmp[1:]
-            time.sleep(0.8)
-            LCD.clear()
-
 def fetch_metar(options, station):
     """ Fetches METAR data from NOAA based on the supplied station ID.
         We don't retry, it will try the fetch again when options.cache expires
