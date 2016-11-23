@@ -19,6 +19,7 @@ def setup():
     LCD.write(1, 1, 'METAR Loop!')
     time.sleep(2)
 
+
 def fetch_metar(options, station):
     """ Fetches METAR data from NOAA based on the supplied station ID.
         We don't retry, it will try the fetch again when options.cache expires
@@ -36,7 +37,11 @@ def fetch_metar(options, station):
     data = response.read()
     if options.debug:
         logging.debug("URL data fetched: " + data)
-    parsed = data.splitlines()[1:2][0] # date is first, data is second line
+    try:
+        parsed = data.splitlines()[1:2][0] # date is first, data is second line
+    except KeyError:
+        parsed = None
+
     return parsed
 
 
@@ -99,12 +104,13 @@ def destroy():
     LCD.clear()
     pass    
 
+
 if __name__ == "__main__":
     parser = OptionParser(usage=__doc__)
-    parser.add_option("-d", "--debug", help="print debug messages", action="store_true",
+    parser.add_option("-d", "--debug", help="Print debug messages.", action="store_true",
                       dest="debug")
     parser.add_option("-s", "--station", default="KCXP", help="METAR Station ID")
-    parser.add_option("-c", "--cache", default=600, help="amount of time (in seconds) to"
+    parser.add_option("-c", "--cache", default=600, help="Amount of time (in seconds) to"
                                                          " use cached data from NOAA. They"
                                                          " update every 5 mins.")
     (options, args) = parser.parse_args()
