@@ -89,10 +89,15 @@ def metars(options):
             fh.write(data)
 
     while True:
-        top = data
+        if options.single_line:
+            top = "METAR " + options.station + " @ " + data.split()[1]
+            LCD.write(0, 0, top[:16])
+        else:
+            top = data
         bottom = data
         for i in range(0, len(data)):
-            LCD.write(0, 0, top[:16])
+            if not options.single_line:
+                LCD.write(0, 0, top[:16])
             LCD.write(0, 1, bottom[16:32])
             top = top[1:]
             bottom = bottom[1:]
@@ -110,9 +115,12 @@ if __name__ == "__main__":
     parser.add_option("-d", "--debug", help="Print debug messages.", action="store_true",
                       dest="debug")
     parser.add_option("-s", "--station", default="KCXP", help="METAR Station ID")
-    parser.add_option("-c", "--cache", default=600, help="Amount of time (in seconds) to"
-                                                         " use cached data from NOAA. They"
-                                                         " update every 5 mins.")
+    parser.add_option("-c", "--cache", default=600,
+                      help="Amount of time (in seconds) to use cached data from NOAA. They"
+                           " update every 5 mins.")
+    parser.add_option("--single-line", action='store_true',
+                      help="Display scrolling METAR data on 2nd line, and station info"
+                           "on first")
     (options, args) = parser.parse_args()
 
     if options.debug:

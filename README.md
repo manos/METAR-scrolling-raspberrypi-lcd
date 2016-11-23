@@ -6,6 +6,7 @@ Reference: https://www.sunfounder.com/learn/sensor-kit-v2-0-for-raspberry-pi-b-p
 This LCD uses the I2C bus, which requires configuration:
 
 sudo apt-get install -y python-smbus i2c-tools
+
 sudo raspi-config # menu -> (Advanced -> A7 I2C) then select "enable kernel module" then reboot.
 
 
