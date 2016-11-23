@@ -88,21 +88,20 @@ def metars(options):
         with open(path, 'w') as fh:
             fh.write(data)
 
-    while True:
-        LCD.clear()
-        if options.single_line:
-            top = options.station + " @ " + data.split()[1]
+    LCD.clear()
+    if options.single_line:
+        top = options.station + " @ " + data.split()[1]
+        LCD.write(0, 0, top[:16])
+    else:
+        top = data + ' '
+    bottom = data + ' ' # trailing space clears the display when done
+    for i in range(0, len(data)):
+        if not options.single_line:
             LCD.write(0, 0, top[:16])
-        else:
-            top = data + ' '
-        bottom = data + ' ' # trailing space clears the display when done
-        for i in range(0, len(data)):
-            if not options.single_line:
-                LCD.write(0, 0, top[:16])
-            LCD.write(0, 1, bottom[16:32])
-            top = top[1:]
-            bottom = bottom[1:]
-            time.sleep(0.8)
+        LCD.write(0, 1, bottom[16:32])
+        top = top[1:]
+        bottom = bottom[1:]
+        time.sleep(0.8)
 
 
 def destroy():
@@ -133,9 +132,8 @@ if __name__ == "__main__":
 
 
     try:
-        #example_loop()
+        setup()
         while True:
-            setup()
             metars(options)
     except KeyboardInterrupt:
         destroy()
