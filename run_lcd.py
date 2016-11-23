@@ -61,6 +61,7 @@ def metars(options):
     data = None
     cache_exists = False
     cache_expired = False
+    using_stale = False
 
     try:
         os.stat(path)
@@ -75,10 +76,11 @@ def metars(options):
     elif not cache_exists:
         data = fetch_metar(options, options.station)
 
-    # data can be None if url fetching failed.
+    # data can be None if url fetching failed... OK to use old cache in this case
     if not data and cache_exists:
         with open(path, 'r') as fh:
             data = fh.readline()
+        using_stale = True
 
     # finally, we have no cache, and the URL fetch probably failed:
     elif not data:
@@ -87,8 +89,9 @@ def metars(options):
         time.sleep(60)
         return False
 
-    # we have data, write to cache if it's expired, or didn't exist:
-    if not cache_exists or cache_expired:
+    # we have data, write to cache if it's expired, or didn't exist (skip if we're
+    # intentionally using stale data, to avoid freshening it with a write):
+    if not using_stale and (not cache_exists or cache_expired):
         with open(path, 'w') as fh:
             fh.write(data)
 
