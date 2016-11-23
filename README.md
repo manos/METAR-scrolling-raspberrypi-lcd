@@ -1,5 +1,5 @@
 
-Code to fetch METAR data and display on an LCD (SunFounder LCD1602), connected to a raspberry pi (
+Code to fetch METAR weather data from NOAA and display it on an LCD (SunFounder LCD1602), connected to a raspberry pi (
 [sunfounder reference](https://www.sunfounder.com/learn/sensor-kit-v2-0-for-raspberry-pi-b-plus/lesson-30-i2c-lcd1602-sensor-kit-v2-0-for-b-plus.html)).
 
 This LCD uses the I2C bus, which requires configuration:
@@ -8,7 +8,7 @@ This LCD uses the I2C bus, which requires configuration:
 
 `sudo raspi-config` in the menu: (Advanced -> A7 I2C) then select "enable kernel module" then reboot.
 
-Just run `./run-lcd.py` and it should work.
+Just run `./run-lcd.py` and it should work (and specify -s KSFO to get SFO data, for example).
 
 Dual line mode (default) scrolls left, wrapping the bottom line up to the top.
 
