@@ -95,7 +95,7 @@ def metars(options):
             LCD.write(0, 0, top[:16])
         else:
             top = data + ' '
-            bottom = data + ' ' # trailing space clears the display when done
+        bottom = data + ' ' # trailing space clears the display when done
         for i in range(0, len(data)):
             if not options.single_line:
                 LCD.write(0, 0, top[:16])
