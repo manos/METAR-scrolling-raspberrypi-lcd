@@ -6,7 +6,10 @@ import stat
 import logging
 import urllib2
 
-import LCD1602 as LCD
+try:
+    import LCD1602 as LCD
+except:
+    pass  # so we can run on devices without the LCD attached, e.g. just fetching METAR data
 
 from optparse import OptionParser
 
